@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qf.j1904.mapper.SysUserMapper">
+    <select id="findByName" parameterType="string" resultType="com.qf.j1904.pojo.SysUser">
+        select
+        *
+        from
+        tb_sys_user
+        where
+        loginName=#{loginName}
+    </select>
+    <resultMap id="sysPermissionMap" type="com.qf.j1904.pojo.SysPermission">
+        <id property="permission_id" column="permission_id"></id>
+        <result property="per_name" column="per_name"></result>
+        <result property="menu_name" column="menu_name"></result>
+        <result property="menu_type" column="menu_type"></result>
+        <result property="menu_url" column="menu_url"></result>
+        <result property="menu_code" column="menu_code"></result>
+        <result property="pId" column="parent_code"></result>
+        <result property="per_desc" column="per_desc"></result>
+        <result property="if_vilid" column="if_vilid"></result>
+
+    </resultMap>
+    <select id="findAllPermission" resultMap="sysPermissionMap" parameterType="string">
+        select
+         p.*
+        from
+        tb_sys_user        u,
+        tb_sys_role        r,
+        tb_sys_permission  p,
+        tb_user_role       ur,
+        tb_role_permission rp
+        where
+        u.userid = ur.user_id
+        and ur.role_id = r.role_id
+        and r.role_id = rp.role_id
+        and rp.permission_id = p.permission_id
+        and loginName=#{logName}
+    </select>
+<!--    <select id="findById" parameterType="int" resultType="com.qf.j1904.pojo.SysPermission">-->
+<!--        select-->
+<!--         p.*-->
+<!--        from-->
+<!--        tb_sys_user        u,-->
+<!--        tb_sys_role        r,-->
+<!--        tb_sys_permission  p,-->
+<!--        tb_user_role       ur,-->
+<!--        tb_role_permission rp-->
+<!--        where-->
+<!--        u.userid = ur.user_id-->
+<!--        and ur.role_id = r.role_id-->
+<!--        and r.role_id = rp.role_id-->
+<!--        and rp.permission_id = p.permission_id-->
+<!--        and r.role_id=#{role_id}-->
+<!--    </select>-->
+</mapper>
